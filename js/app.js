@@ -111,7 +111,7 @@ document.querySelector('#navbar__list').appendChild(fragment);
 // Scroll to section on link click
 
 // Set sections as active
-var handler = function(){
+var activeMenuHandler = function(){
     let headers = document.querySelectorAll('.landing__container h2');
     let sections = document.querySelectorAll('body main section');
     let navbar = document.querySelectorAll('.navbar__menu .menu__link');
@@ -127,8 +127,34 @@ var handler = function(){
     }
 }
 
-window.addEventListener('DOMContentLoaded', handler);
-window.addEventListener('load', handler);
-window.addEventListener('scroll', handler);
-window.addEventListener('resize', handler);
+var enableHeaderMovement = function(){
+    var header = document.querySelector('.page__header');
+    var height = window.scrollY;
+    if(height > 100){
+        if(!header.classList.contains('fixedHeader')){
+            header.classList.add('fixedHeader');
+        }
+        if(header.classList.contains('movingHeader')){
+            header.classList.remove('movingHeader');
+        }
+    } else if(height <= 100){
+        if(header.classList.contains('fixedHeader')){
+            header.classList.remove('fixedHeader');
+        }
+        if(!header.classList.contains('movingHeader')){
+            header.classList.add('movingHeader');
+        }
+    }
+
+}
+
+window.addEventListener('DOMContentLoaded', activeMenuHandler);
+window.addEventListener('load', activeMenuHandler);
+window.addEventListener('scroll', activeMenuHandler);
+window.addEventListener('resize', activeMenuHandler);
+
+window.addEventListener('DOMContentLoaded', enableHeaderMovement);
+window.addEventListener('load', enableHeaderMovement);
+window.addEventListener('scroll', enableHeaderMovement);
+window.addEventListener('resize', enableHeaderMovement);
 
