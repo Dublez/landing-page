@@ -25,6 +25,7 @@
  * 
 */
 
+// This helper function shows if an element is in viewport
 function isElementInViewport (el) {
     var rect = el.getBoundingClientRect();
     return (
@@ -35,12 +36,14 @@ function isElementInViewport (el) {
     );
 }
 
+// This helper function makes headers invisible
 var oldVisible = new Object();
 let headers = document.querySelector('main section div h2');
 for(let i = 0; i < headers.length; i++){
     oldVisible['h'+i] = false;
 }
 
+// This helper function checks if an element became visible / invisible in the viewport and if yes it triggers callback 
 function onVisibilityEnabled(header, i, callbackIfTrue){    
     var visible = isElementInViewport(header);
     if(visible != oldVisible[i]){
@@ -52,22 +55,26 @@ function onVisibilityEnabled(header, i, callbackIfTrue){
 
 }
 
+// This helper function deselects all sections
 function deselectAllSections(sections){
     for (section of sections){
         section.classList.remove('your-active-class');
     }
 }
 
+// This helper function selects visible section
 function selectVisibleSection(section){
     section.classList.add('your-active-class');
 }
 
+// This helper function deselects all navigation menu items
 function deselectAllNavbar(navbar){
     for (n of navbar){
         n.classList.remove('your-active-class');
     }
 }
 
+// This helper function selects visible navigation menu items
 function selectVisibleNavbarElement(navElement){
     navElement.classList.add('your-active-class');
 }
@@ -80,13 +87,17 @@ function selectVisibleNavbarElement(navElement){
  * 
 */
 
-// build the nav
+// This piece of code creates the navigation menu
 const fragment = document.createDocumentFragment();
 let sections = document.querySelectorAll('main section');
-for(var s of sections){
+for(let i = 0; i < sections.length; i++){
+    let s = sections[i];
     var link = document.createElement('a');
     link.textContent = s.dataset.nav;
-    link.href = '#'+s.id;
+    link.addEventListener('click', function(event){
+        event.preventDefault();
+        s.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+    });
     var menuElement = document.createElement('li');
     menuElement.className = 'menu__link';
     menuElement.id = 'Nav'+s.id;
@@ -95,10 +106,19 @@ for(var s of sections){
 }
 document.querySelector('#navbar__list').appendChild(fragment);
 
+//This piece of code creatse scrollToTop link
+let scrollToTopAnchorLink = document.querySelector('#scrollToTopImg');
+scrollToTopAnchorLink.addEventListener('click', function(event){
+    event.preventDefault();
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+});
+
 // Add class 'active' to section when near top of viewport
 
 // Scroll to anchor ID using scrollTO event
-
 
 /**
  * End Main Functions
@@ -110,7 +130,7 @@ document.querySelector('#navbar__list').appendChild(fragment);
 
 // Scroll to section on link click
 
-// Set sections as active
+// This handler activates menu and section when it is visible in the viewport
 var activeMenuHandler = function(){
     let headers = document.querySelectorAll('.landing__container h2');
     let sections = document.querySelectorAll('body main section');
@@ -127,6 +147,7 @@ var activeMenuHandler = function(){
     }
 }
 
+// This function enables nice header movement
 var enableHeaderMovement = function(){
     var header = document.querySelector('.page__header');
     var height = window.scrollY;
@@ -148,6 +169,23 @@ var enableHeaderMovement = function(){
 
 }
 
+// This function enables scroll to top icon
+var enableScrollToTop = function(){
+    var scrollLink = document.querySelector('#scrollToTopImg');
+    var height = window.scrollY;
+    if(height > 300){
+        if(scrollLink.classList.contains('hidden')){
+            scrollLink.classList.remove('hidden');
+        }
+    } else if(height <= 300){
+        if(!scrollLink.classList.contains('hidden')){
+            scrollLink.classList.add('hidden');
+        }
+    }
+
+}
+
+// The following code assigns event listeners
 window.addEventListener('DOMContentLoaded', activeMenuHandler);
 window.addEventListener('load', activeMenuHandler);
 window.addEventListener('scroll', activeMenuHandler);
@@ -157,4 +195,18 @@ window.addEventListener('DOMContentLoaded', enableHeaderMovement);
 window.addEventListener('load', enableHeaderMovement);
 window.addEventListener('scroll', enableHeaderMovement);
 window.addEventListener('resize', enableHeaderMovement);
+
+window.addEventListener('DOMContentLoaded', enableScrollToTop);
+window.addEventListener('load', enableScrollToTop);
+window.addEventListener('scroll', enableScrollToTop);
+window.addEventListener('resize', enableScrollToTop);
+
+let secs = document.querySelectorAll('.landing__container');
+for(sec of secs){
+    let header = sec.firstElementChild;
+    header.addEventListener('click', function(){
+        header.nextElementSibling.classList.toggle('section-content-collapsed');
+        header.firstElementChild.nextElementSibling.classList.toggle('arrow-image-collapsed');
+    });
+}
 

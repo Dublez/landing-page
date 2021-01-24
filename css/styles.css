@@ -34,10 +34,15 @@ h1 {
 }
 
 h2 {
-    border-bottom: 1px solid #cc1;
     font-family: 'Oxygen', Sans-Serif;
     font-size: 3em;
     color: #fff;
+    display: inline-block;
+}
+
+.section-header{
+    border-bottom: 1px solid #cc1;
+    width: 100%;
 }
 
 p {
@@ -57,7 +62,7 @@ main {
 
 section {
     position: relative;
-    min-height: 80vh;
+    min-height: 10vh;
 }
 
 
@@ -121,7 +126,49 @@ section {
     .movingHeader {
         position: absolute;
         top: 100px;
-    }    
+    }   
+} 
+
+/* Scroll to top styles */
+#scrollToTopDiv{
+    position: fixed;
+    top: 5em;
+    right: 1em;
+}
+
+#scrollToTopImg{
+    height: 2em;
+    width: 2em;
+    max-width: 2em;
+    fill: white;
+    opacity: 0.5;
+    transition: ease 1s all;
+}
+
+#scrollToTopImg:hover{
+    opacity: 1;
+}
+
+#scrollToTopImg.hidden{
+    opacity: 0;
+}
+
+.arrow-image{
+    height: 2em;
+    width: 2em;
+    max-width: 2em;
+    margin-bottom: 1.5em;
+    margin-left: 1.5em;
+    display: inline-block;
+    vertical-align: middle;
+    fill: white;
+    transition: ease 1s all;
+}
+
+.arrow-image-collapsed{
+    transform: rotate(90deg);
+    transition: ease 1s all;
+}
 
 /* Footer Styles */
 .page__footer {
@@ -151,7 +198,7 @@ section {
 
 section:nth-of-type(even) .landing__container {
     margin-right: 0;
-    margin-left: auto;
+    /* margin-left: auto; */
     text-align: right; 
 }
 
@@ -215,6 +262,16 @@ section:nth-of-type(3n + 1) .landing__container::after {
     transition: ease 0.5s all;
 }
 
+.section-content{
+    max-height: 100vh;
+    transition: max-height .5s ease-in-out;
+}
+
+.section-content-collapsed{
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height .5s ease-in-out;
+}
 
 /* ---- Theme State Rules ---- */
 /* Section Active Styles */
